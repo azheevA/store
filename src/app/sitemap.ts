@@ -1,19 +1,26 @@
 import type { MetadataRoute } from "next";
 import { products } from "@/entities/product/data/products";
-import { siteConfig } from "@/shared/config/site";
+import { absoluteUrl } from "@/shared/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/catalog"].map((route) => ({
-    url: `${siteConfig.url}${route}`,
-    lastModified: new Date(),
-    changeFrequency: route === "" ? ("weekly" as const) : ("daily" as const),
-    priority: route === "" ? 1 : 0.8,
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: absoluteUrl("/"),
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: absoluteUrl("/catalog"),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+  ];
+
+  const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
+    url: absoluteUrl(`/product/${product.slug}`),
+    changeFrequency: "weekly",
+    priority: product.isPopular ? 0.8 : product.isNew ? 0.75 : 0.7,
   }));
-  const productRoutes = products.map((product) => ({
-    url: `${siteConfig.url}/product/${product.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
+
   return [...staticRoutes, ...productRoutes];
 }

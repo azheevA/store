@@ -88,6 +88,19 @@ bun run test:e2e:ui
 bun run test:performance
 ```
 
+### SEO и Open Graph
+
+- Уникальные `title`, `description` и canonical URL для главной, каталога и карточек товаров.
+- Open Graph и Twitter Card с брендированным изображением 1200 × 630.
+- JSON-LD для `Organization`, `WebSite`, `Product` и `BreadcrumbList`.
+- `robots.txt` и `sitemap.xml`; в sitemap попадают только индексируемые страницы.
+- Корзина, избранное, оформление заказа и страница успешного заказа помечены `noindex`.
+- Preview-деплои Vercel автоматически получают `noindex` и закрываются от обхода.
+
+`NEXT_PUBLIC_SITE_URL` задаёт канонический production URL. На Vercel добавьте его в **Project Settings → Environment Variables → Production** (например, `https://ваш-домен`). Если переменная не задана, приложение использует `VERCEL_PROJECT_PRODUCTION_URL`. Локально используйте `http://localhost:3000` из `.env.example`.
+
+Подробности перед публичным запуском — в [SEO-SETUP.md](./SEO-SETUP.md).
+
 ### CI/CD
 
 GitHub Actions запускает workflow `.github/workflows/ci.yml` при `push` и `pull_request` в `main` или `master`:
@@ -199,6 +212,19 @@ bun run test:e2e:ui
 bun run test:performance
 ```
 
+### SEO and Open Graph
+
+- Unique `title`, `description` and canonical URLs for the homepage, catalog and product pages.
+- Open Graph and Twitter Cards with a branded 1200 × 630 preview image.
+- JSON-LD structured data for `Organization`, `WebSite`, `Product` and `BreadcrumbList`.
+- Generated `robots.txt` and `sitemap.xml`; the sitemap contains indexable routes only.
+- Cart, favorites, checkout and order-success pages are marked `noindex`.
+- Vercel Preview deployments are automatically marked `noindex` and blocked from crawling.
+
+`NEXT_PUBLIC_SITE_URL` defines the canonical production origin. On Vercel, set it under **Project Settings → Environment Variables → Production** (for example, `https://your-domain`). If it is not set, the app falls back to `VERCEL_PROJECT_PRODUCTION_URL`. For local development, use `http://localhost:3000` from `.env.example`.
+
+See [SEO-SETUP.md](./SEO-SETUP.md) for the pre-launch checklist.
+
 ### CI/CD
 
 GitHub Actions runs `.github/workflows/ci.yml` on `push` and `pull_request` to `main` or `master`:
@@ -229,19 +255,3 @@ Dependabot checks Bun dependencies and GitHub Actions for updates every week.
 ## License / Лицензия
 
 Лицензия проекта пока не указана. / No license has been specified for this project.
-
-## Установка зависимостей перед проверками / Install dependencies before checks
-
-После скачивания проекта сначала установите зависимости, включая devDependencies для Vitest, Testing Library и Playwright:
-
-```bash
-bun install
-```
-
-Затем запустите проверку типов:
-
-```bash
-bun run typecheck
-```
-
-The repository uses Bun. Run `bun install` after extracting or cloning the project so that test tools from `devDependencies` are available. The first install also synchronizes `bun.lock` with `package.json`; commit the updated lockfile together with `package.json`.
